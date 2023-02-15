@@ -451,3 +451,53 @@
 
 
 </details>
+<details>
+
+<summary>
+  2.14.2023
+</summary>
+
+ ## Learning
+
+
+ 
+   -Add Product From Vendor Database and Page Design Part 5
+
+   -Add Product From Vendor Database and Page Design Part 6
+
+   -Backend Slider CRUD Setup Part 1
+
+   -Backend Slider CRUD Setup Part 2
+
+   -Backend Slider CRUD Setup Part 3
+
+   -Backend Banner CRUD Setup Part 1
+
+   -Backend Banner CRUD Setup Part 2
+
+   -Backend Banner CRUD Setup Part 3
+
+   -Add Some Demo Data
+
+   -Frontend Show Category Subcategory Part 1
+
+   -Frontend Show Category Subcategory Part 2
+
+   -Frontend Dynamic Main Sliders
+
+   -Frontend Dynamic Featured Categories Display
+
+   -Frontend Dynamic Ads Display
+
+   -Frontend Dynamic New Product Display Part 1
+
+   -Frontend Dynamic New Product Display Part 2
+
+   -Frontend Dynamic New Product Display Part 3
+
+   
+   
+## project
+
+
+</details>

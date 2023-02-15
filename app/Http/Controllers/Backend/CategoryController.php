@@ -93,7 +93,7 @@ public function deleteCategory($id){
     $category = Category::find($id);
 
     $img = $category->category_image;
-    unlink($img);
+    // unlink($img);
    if(isset($category)){
        $category->status=0;
        $notification = array(

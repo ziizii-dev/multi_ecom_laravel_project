@@ -185,7 +185,7 @@ public function updateProductMultiImage(Request $request){
     if($imgs){
         foreach ($imgs as $id=>$img ){
             $imgDel = MultiImg::findOrFail($id);
-            unlink($imgDel->photo_name);
+            // unlink($imgDel->photo_name);
             $multiImg = hexdec(uniqid()).'.'.$img->getClientOriginalExtension();
             Image::make($img)->resize(800,800)->save('upload/products/multi-image/'.$multiImg);
             $uploadPath = 'upload/products/multi-image/'.$multiImg;
@@ -281,13 +281,10 @@ public function deleteProduct($id){
         };
 
         $notification = array(
-            'message'=>"Deleted Successfully",
+            'message'=>"Product Deleted Successfully",
             'alert-type'=>'success'
         );
-
             return redirect()->back()->with($notification);
-
-
 
 }//End method
 //Validation

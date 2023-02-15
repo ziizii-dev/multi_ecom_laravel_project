@@ -142,6 +142,107 @@ $notification = array(
 return redirect()->route('vendor#allProduct')->with($notification);
 }//End Method
 
+
+//Update product thambnail
+public function vendorUpdateProductThambnail(Request $request){
+
+        $pro_id = $request->id;
+        $oldImage = $request->old_img;
+        $image = $request->file('product_thambnail');
+        if($image){
+            $fileName = hexdec(uniqid()).'.'.$image->getClientOriginalExtension();
+            Image::make($image)->resize(800,800)->save('upload/products/thambnail/'.$fileName);
+            $save_url = 'upload/products/thambnail/'.$fileName;
+            if(file_exists($oldImage)){
+                unlink($oldImage);
+            }
+            Product::findOrFail($pro_id)->update([
+                'product_thambnail'=>$save_url,
+                'updated_at'=>Carbon::now(),
+            ]);
+            $notification = array(
+                'message'=>" Vendor Product  Image Thambnail Updated  Successfully",
+                'alert-type'=>'success'
+            );
+            return redirect()->back()->with($notification);
+        } else{
+            $notification = array(
+                'message'=>"There is no image data",
+                'alert-type'=>'warning'
+            );
+            return redirect()->back()->with($notification);
+        };
+
+    }//End Method
+    //Update Multi Image
+public function vendorUpdateProductMultiImage(Request $request){
+    $imgs = $request->multi_img;
+    // dd($imgs);
+    if($imgs){
+        foreach ($imgs as $id=>$img ){
+            $imgDel = MultiImg::findOrFail($id);
+            unlink($imgDel->photo_name);
+            $multiImg = hexdec(uniqid()).'.'.$img->getClientOriginalExtension();
+            Image::make($img)->resize(800,800)->save('upload/products/multi-image/'.$multiImg);
+            $uploadPath = 'upload/products/multi-image/'.$multiImg;
+            MultiImg::where('id',$id)->update([
+                'photo_name'=>$uploadPath,
+                'created_at'=>Carbon::now(),
+            ]);
+        };//End foreach
+        $notification = array(
+            'message'=>"Vendor Product  Multi Image  Updated  Successfully",
+            'alert-type'=>'success'
+        );
+        return redirect()->back()->with($notification);
+
+    } else{
+        $notification = array(
+            'message'=>"There is no image data!",
+            'alert-type'=>'warning'
+        );
+        return redirect()->back()->with($notification);
+    };
+}//End Method
+//Delete Multi Image
+public function vendorDeleteProductMultiImage($id){
+    $oldImg =MultiImg::findOrFail($id);
+  if(isset($oldImg)){
+      $oldImg->delete_status = 0;
+      $notification = array(
+          'message'=>"Vendor Product  Multi Image  Deleted  Successfully",
+          'alert-type'=>'success'
+      );
+      if($oldImg->save()){
+          return redirect()->back()->with($notification);
+      };
+
+  }
+
+}//End method
+//Inactive Product
+public function vendorInactiveProduct($id){
+    Product::findOrFail($id)->update([
+       'status'=>0,
+    ]);
+    $notification = array(
+       'message'=>"Vendor Product Inactive Successfully",
+       'alert-type'=>'success'
+   );
+   return redirect()->back()->with($notification);
+}//End Method
+//Active Product
+public function vendorActiveProduct($id){
+    Product::findOrFail($id)->update([
+       'status'=>1,
+    ]);
+    $notification = array(
+       'message'=>"Vendor Product Active Successfully",
+       'alert-type'=>'success'
+   );
+   return redirect()->back()->with($notification);
+}//End Method
+
 //Validation
 private function storeProductValidationCheck($request){
     Validator::make($request->all(),[
@@ -163,6 +264,26 @@ private function storeProductValidationCheck($request){
 
     ])->Validate();
  }//End method
+
+ //Delete Product
+public function vendorDeleteProduct($id){
+    $product = Product::findOrFail($id);
+       $product->delete_status = 0;
+      $product->save();
+       $imgs = MultiImg::where('product_id',$id)->get();
+                   foreach($imgs as $img){
+                       // unlink($img->photo_name);
+                           $img->delete_status = 0;
+                           $img->save();
+   };
+
+   $notification = array(
+       'message'=>"Vendor Product Deleted Successfully",
+       'alert-type'=>'success'
+   );
+       return redirect()->back()->with($notification);
+
+}//End method
     //Validation
 private function updateProductValidationCheck($request){
     Validator::make($request->all(),[

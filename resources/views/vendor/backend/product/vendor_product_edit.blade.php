@@ -255,7 +255,7 @@
     <hr>
 <div class="row">
     <div class="card">
-        <form id="myForm" action="{{route('update#productThambnail')}}" method="POST" enctype="multipart/form-data">
+        <form id="myForm" action="{{route('vendor#updateProductThambnail')}}" method="POST" enctype="multipart/form-data">
             @csrf
             <input type="hidden" name="id" value="{{$products->id}} ">
             <input type="hidden" name="old_img" value="{{$products->product_thambnail}} " class="form-control @error('old_img') is-invalid
@@ -302,7 +302,7 @@
                 </tr>
             </thead>
             <tbody>
-                <form id="myForm" action="{{route('update#productMultiImage')}}" method="POST" enctype="multipart/form-data">
+                <form id="myForm" action="{{route('vendor#updateProductMultiImage')}}" method="POST" enctype="multipart/form-data">
                     @csrf
 
                     @foreach ($multiImgs as $key=>$img )
@@ -314,7 +314,7 @@
                         </td>
                         <td>
                             <input type="submit" class="btn btn-primary px-2" value=" Update Image ">
-                            <a href="{{route("product#multiImgeDelete",$img->id)}} " class="btn btn-danger" id="delete">Delete</a>
+                            <a href="{{route("vendor#productMultiImgeDelete",$img->id)}} " class="btn btn-danger" id="delete">Delete</a>
                         </td>
                     </tr>
                     @endforeach ()
