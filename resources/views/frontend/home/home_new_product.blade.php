@@ -31,7 +31,7 @@
                         <div class="product-cart-wrap mb-30 wow animate__animated animate__fadeIn" data-wow-delay=".1s">
                             <div class="product-img-action-wrap">
                                 <div class="product-img product-img-zoom">
-                                    <a href="shop-product-right.html">
+                                    <a href="{{url('product/details/'.$product->id.'/'.$product->product_slug)}}">
                                         <img class="default-img" src="{{asset($product->product_thambnail)}} " alt="" />
                                     </a>
                                 </div>
@@ -60,7 +60,7 @@
                                 <div class="product-category">
                                     <a href="shop-grid-right.html">{{$product['category']['category_name']}} </a>
                                 </div>
-                                <h2><a href="shop-product-right.html">{{$product->product_name}} </a></h2>
+                                <h2><a href="{{url('product/details/'.$product->id.'/'.$product->product_slug)}}">{{$product->product_name}} </a></h2>
                                 {{-- <div class="product-rate-cover">
                                     <div class="product-rate d-inline-block">
                                         <div class="product-rating" style="width: 90%"></div>
@@ -79,14 +79,14 @@
 
                                 @if ($product->discount_price == NULL)
                                 <div class="product-price">
-                                    <span>{{$product->selling_price}}$ </span>
+                                    <span>${{$product->selling_price}}</span>
                                     {{-- <span class="old-price">$32.8</span> --}}
                                 </div>
 
                                 @else
                                 <div class="product-price">
-                                    <span>{{$product->discount_price}}$ </span>
-                                    <span class="old-price">{{$product->selling_price}}$</span>
+                                    <span>${{$product->discount_price}} </span>
+                                    <span class="old-price">${{$product->selling_price}}</span>
                                 </div>
                                 @endif
                                 <div class="product-card-bottom">
@@ -121,7 +121,7 @@
                         <div class="product-cart-wrap mb-30 wow animate__animated animate__fadeIn" data-wow-delay=".1s">
                             <div class="product-img-action-wrap">
                                 <div class="product-img product-img-zoom">
-                                    <a href="shop-product-right.html">
+                                    <a href="{{url('product/details/'.$product->id.'/'.$product->product_slug)}}">
                                         <img class="default-img" src="{{asset($product->product_thambnail)}} " alt="" />
                                     </a>
                                 </div>
@@ -135,7 +135,7 @@
                                     $discount = ($amount/$product->selling_price) * 100;
                                 @endphp
 
-
+{{--
                                 <div class="product-badges product-badges-position product-badges-mrg">
                                     @if ($product->discount_price == NULL)
                                     <span class="new">New</span>
@@ -144,13 +144,13 @@
                                     <span class="hot">{{round($discount)}}% </span>
 
                                     @endif
-                                </div>
+                                </div> --}}
                             </div>
                             <div class="product-content-wrap">
                                 <div class="product-category">
-                                    <a href="shop-grid-right.html">{{$product['category']['category_name']}} </a>
+                                    <a href="{{url('product/details/'.$product->id.'/'.$product->product_slug)}}">{{$product['category']['category_name']}} </a>
                                 </div>
-                                <h2><a href="shop-product-right.html">{{$product->product_name}} </a></h2>
+                                <h2><a href="{{url('product/details/'.$product->id.'/'.$product->product_slug)}}">{{$product->product_name}} </a></h2>
                                 {{-- <div class="product-rate-cover">
                                     <div class="product-rate d-inline-block">
                                         <div class="product-rating" style="width: 90%"></div>
@@ -169,14 +169,14 @@
 
                                 @if ($product->discount_price == NULL)
                                 <div class="product-price">
-                                    <span>{{$product->selling_price}}$ </span>
+                                    <span>${{$product->selling_price}} </span>
                                     {{-- <span class="old-price">$32.8</span> --}}
                                 </div>
 
                                 @else
                                 <div class="product-price">
-                                    <span>{{$product->discount_price}}$ </span>
-                                    <span class="old-price">{{$product->selling_price}}$</span>
+                                    <span>${{$product->discount_price}} </span>
+                                    <span class="old-price">${{$product->selling_price}}</span>
                                 </div>
                                 @endif
                                 <div class="product-card-bottom">

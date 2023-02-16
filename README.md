@@ -501,3 +501,38 @@
 
 
 </details>
+<details>
+
+<summary>
+  2.15.2023
+</summary>
+
+ ## Learning
+
+
+ 
+   -Product Details Show Part 1
+
+   -Product Details Show Part 2
+
+   -Product Details Show Part 3
+
+   -Product Details Show Part 4
+
+   -Product Details Show Part 5
+
+   -Product Details Show Part 6
+
+   -Product Details Show Part 7
+
+   -Product Details Show Part 
+
+   -Featured Product Show
+
+   
+   
+   
+## project
+
+
+</details>

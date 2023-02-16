@@ -9,6 +9,7 @@ use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Controllers\Backend\BrandController;
 use App\Http\Controllers\Backend\BannerController;
 use App\Http\Controllers\Backend\SliderController;
+use App\Http\Controllers\Frontend\IndexController;
 use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Backend\SubCategoryController;
@@ -38,7 +39,7 @@ Route::middleware(['auth'])->group(function(){
             Route::post('/user/update/password','updatePassword')->name('user#updatePassword');
 
     });
-});
+});//End Middleware
 
 // Route::get('/dashboard', function () {
 //     return view('dashboard');
@@ -225,3 +226,13 @@ Route::get('admin/login',[AdminController::class,'adminLogin'])->name('admin#log
 Route::get('vendor/login',[VendorController::class,'vendorLogin'])->name('vendor#login')->middleware(RedirectIfAuthenticated::class);
 Route::get('become/vendor',[VendorController::class,'becomeVendor'])->name('become#vendor');
 Route::post('vendor/register',[VendorController::class,'vendorRegister'])->name('vendor#register');
+
+
+ //froent product details all route
+
+
+    Route::controller(IndexController::class)->group(function(){
+            Route::get('/product/details/{id}/{slug}','productDetails');
+
+    });
+

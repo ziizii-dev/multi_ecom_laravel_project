@@ -51,7 +51,7 @@
 
                             <td><img src="{{asset($item->product_thambnail)}} " style="width:70px; height:40px" alt=""></td>
                             <td>{{$item->product_name}}</td>
-                            <td>{{$item->selling_price}}$</td>
+                            <td>${{$item->selling_price}}</td>
                             <td>{{$item->product_qty}}</td>
                             <td>
                                 @if($item->discount_price == NULL)
