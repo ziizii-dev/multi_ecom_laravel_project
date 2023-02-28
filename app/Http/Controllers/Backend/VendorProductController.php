@@ -27,15 +27,15 @@ class VendorProductController extends Controller
 }//End Method
 //Add product
 public function vendorAddProduct(){
-    $brands = Brand::latest()->get();
-    $categories= Category::latest()->get();
+    $brands = Brand::where('status',1)->latest()->get();
+    $categories= Category::where('status',1)->latest()->get();
 
     return view('vendor.backend.product.vendor_product_add',compact('brands','categories'));
 }//End Method
 //get subcategory data form ajax
 public function vendorGetSubCategory($category_id){
     // dd($category_id);
-$subcat = SubCategory::where('category_id',$category_id)->orderBy('subcategory_name','ASC')->get();
+$subcat = SubCategory::where('status',1)->where('category_id',$category_id)->orderBy('subcategory_name','ASC')->get();
 // dd($subcat);
 return json_encode($subcat);
 }//End method
@@ -98,10 +98,10 @@ public function vendorStoreProduct(Request $request){
 //Edit product
 public function vendorEditProduct($id){
     $multiImgs = MultiImg::where('product_id',$id)->where('delete_status',1)->get();
-    $brands = Brand::latest()->get();
+    $brands = Brand::where('status',1)->latest()->get();
     $categories= Category::latest()->get();
-    $subcategory= SubCategory::latest()->get();
-    $products = Product::findOrFail($id);
+    $subcategory= SubCategory::where('status',1)->latest()->get();
+    $products = Product::where('delete_status',1)->findOrFail($id);
 
     return view('vendor.backend.product.vendor_product_edit',compact('brands','categories','products','subcategory','multiImgs'));
 }//End method
@@ -222,7 +222,7 @@ public function vendorDeleteProductMultiImage($id){
 }//End method
 //Inactive Product
 public function vendorInactiveProduct($id){
-    Product::findOrFail($id)->update([
+    Product::where('delete_status',1)->findOrFail($id)->update([
        'status'=>0,
     ]);
     $notification = array(
@@ -267,10 +267,10 @@ private function storeProductValidationCheck($request){
 
  //Delete Product
 public function vendorDeleteProduct($id){
-    $product = Product::findOrFail($id);
+    $product = Product::where('delete_status',1)->findOrFail($id);
        $product->delete_status = 0;
       $product->save();
-       $imgs = MultiImg::where('product_id',$id)->get();
+       $imgs = MultiImg:: where('delete_status',1)->where('product_id',$id)->get();
                    foreach($imgs as $img){
                        // unlink($img->photo_name);
                            $img->delete_status = 0;

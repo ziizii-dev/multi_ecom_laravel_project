@@ -3,8 +3,13 @@
     <div class="page-header breadcrumb-wrap">
         <div class="container">
             <div class="breadcrumb">
-                <a href="index.html" rel="nofollow"><i class="fi-rs-home mr-5"></i>Home</a>
-                <span></span> <a href="shop-grid-right.html">{{ $product['category']['category_name'] }}</a> <span></span> {{ $product['subcategory']['subcategory_name'] }}<span></span>
+                <a href="{{url('/')}} " rel="nofollow"><i class="fi-rs-home mr-5"></i>Home</a>
+         {{-- @php
+                $products = App\Models\Product::where('category_id',$category->id)->where('delete_status',1)->get();
+            @endphp --}}
+
+                <span></span> <a href="{{route('category#details',[$product->category->id,$product->category->category_slug])}}">{{ $product->category['category_name'] }}</a>
+                <span></span> {{ $product['subcategory']['subcategory_name'] }}<span></span>
                 {{ $product->product_name }}
 
             </div>
@@ -46,7 +51,7 @@
                                     <span class="stock-status out-stock"> Stock Out </span>
                                 @endif
 
-                                <h2 class="title-detail">{{ $product->product_name }} </h2>
+                                <h2 class="title-detail" id="dpname">{{ $product->product_name }} </h2>
                                 {{-- <div class="product-detail-rating">
                                 <div class="product-rate-cover text-end">
                                     <div class="product-rate d-inline-block">
@@ -86,7 +91,7 @@
                                     <div class="input-group mb-3">
                                         <label class="input-group-text" for="inputGroupSelect01">
                                             <strong style="width:50px;">Size : </strong> </label>
-                                        <select class="form-select" id="inputGroupSelect01">
+                                        <select class="form-select" id="dsize">
                                             <option selected disabled>--Choose Size...</option>
                                             @foreach ($product_size as $size)
                                                 <option value="{{ $size }} ">{{ ucwords($size) }} </option>
@@ -100,7 +105,7 @@
                                     <div class="input-group mb-3">
                                         <label class="input-group-text" for="inputGroupSelect01">
                                             <strong style="width:50px;">Color : </strong> </label>
-                                        <select class="form-select" id="inputGroupSelect01">
+                                        <select class="form-select" id="dcolor">
                                             <option selected disabled>--Choose Color...</option>
                                             @foreach ($product_color as $color)
                                                 <option value="{{ $color }} ">{{ ucwords($color) }} </option>
@@ -112,11 +117,18 @@
                                 <div class="detail-extralink mb-50">
                                     <div class="detail-qty border radius">
                                         <a href="#" class="qty-down"><i class="fi-rs-angle-small-down"></i></a>
-                                        <input type="text" name="quantity" class="qty-val" value="1" min="1">
+                                        <input type="text" name="quantity" id="dqty" class="qty-val" value="1" min="1">
                                         <a href="#" class="qty-up"><i class="fi-rs-angle-small-up"></i></a>
                                     </div>
+
+
+
+
                                     <div class="product-extra-link2">
-                                        <button type="submit" class="button button-add-to-cart"><i
+                                        {{-- <input type="hidden" name="" id="product_id"> --}}
+                                        <input type="hidden" name="" id="dproduct_id" value="{{$product->id}}">
+
+                                        <button type="submit" class="button button-add-to-cart"  onclick="addToCartDetails()"><i
                                                 class="fi-rs-shopping-cart"></i>Add to cart</button>
                                         <a aria-label="Add To Wishlist" class="action-btn hover-up"
                                             href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
@@ -127,7 +139,7 @@
                                 @if ($product->vendor_id == null)
                                     <h6> Sold By <a href="#"><span class="text-danger">Owner</span></a> </h6>
                                 @else
-                                    <h6> Sold By <a href="#"><span
+                                    <h6> Sold By <a href="{{route('vendor#details',$product->vendor_id)}}"><span
                                                 class="text-danger">{{ $product['vendor']['name'] }} </span></a> </h6>
                                 @endif
                                 <hr>
@@ -160,14 +172,14 @@
                     <div class="product-info">
                         <div class="tab-style3">
                             <ul class="nav nav-tabs text-uppercase">
-                                <li class="nav-item">
+                                {{-- <li class="nav-item">
                                     <a class="nav-link active" id="Description-tab" data-bs-toggle="tab"
                                         href="#Description">Description</a>
-                                </li>
-                                <li class="nav-item">
+                                </li> --}}
+                                {{-- <li class="nav-item">
                                     <a class="nav-link" id="Additional-info-tab" data-bs-toggle="tab"
                                         href="#Additional-info">Additional info</a>
-                                </li>
+                                </li> --}}
                                 <li class="nav-item">
                                     <a class="nav-link" id="Vendor-info-tab" data-bs-toggle="tab"
                                         href="#Vendor-info">Vendor</a>
@@ -282,11 +294,11 @@
                                         <div class="vendor-name ml-15">
                                             @if ($product->vendor_id == NULL)
                                             <h6>
-                                                <a href="vendor-details-2.html">Owner</a>
+                                                <a href="#">Owner</a>
                                             </h6>
                                             @else
                                             <h6>
-                                                <a href="vendor-details-2.html">{{$product['vendor']['name']}} </a>
+                                                <a href="{{route('vendor#details',$product->vendor_id)}}">{{$product['vendor']['name']}} </a>
                                             </h6>
                                             @endif
 
@@ -527,17 +539,21 @@
 
                                                 </a>
                                             </div>
-                                            {{-- <div class="product-action-1">
-                                                <a aria-label="Quick view" class="action-btn small hover-up"
-                                                    data-bs-toggle="modal" data-bs-target="#quickViewModal"><i
-                                                        class="fi-rs-search"></i></a>
-                                                <a aria-label="Add To Wishlist" class="action-btn small hover-up"
-                                                    href="shop-wishlist.html" tabindex="0"><i
-                                                        class="fi-rs-heart"></i></a>
-                                                <a aria-label="Compare" class="action-btn small hover-up"
-                                                    href="shop-compare.html" tabindex="0"><i
-                                                        class="fi-rs-shuffle"></i></a>
-                                            </div> --}}
+                                            <div class="product-action-1">
+                                                <a aria-label="Add To Wishlist" class="action-btn" href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
+                                                <a aria-label="Compare" class="action-btn" href="shop-compare.html"><i class="fi-rs-shuffle"></i></a>
+                                                <a aria-label="Quick view" class="action-btn" data-bs-toggle="modal" data-bs-target="#quickViewModal"  id="{{$product->id}}"
+                                                    onclick = "productView(this.id)"><i class="fi-rs-eye"></i></a>
+                                            </div>
+                                            <div class="product-action-1">
+
+                                                <a aria-label="Add To Wishlist" class="action-btn" id="{{$product->id}}"
+                                                   onclick = "addToWishList(this.id)"><i class="fi-rs-heart"></i></a>
+                                                 <a aria-label="Compare" class="action-btn"  id="{{$product->id}}"
+                                                                   onclick = "addToCompare(this.id)"><i class="fi-rs-shuffle"></i></a>
+                                              <a aria-label="Quick view" class="action-btn" data-bs-toggle="modal" data-bs-target="#quickViewModal" id="{{$product->id}}"
+                                                        onclick = "productView(this.id)"> <i class="fi-rs-eye"></i> </a>
+                                                                               </div>
                                             <div class="product-badges product-badges-position product-badges-mrg">
                                           @php
                                                 $amount = $product->selling_price - $product->discount_price;

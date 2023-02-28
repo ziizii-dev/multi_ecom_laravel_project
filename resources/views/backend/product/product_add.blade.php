@@ -177,25 +177,23 @@
                         <label for="inputProductType" class="form-label">Product Brand </label>
                         <select name="brand_id" class="form-select  @error('brand_id') is-invalid
                         @enderror" id="inputProductType">
-                            <option> Select Product Brand</option>
+                            {{-- <option> Select Product Brand</option> --}}
+                                 <option value=""></option>
                             @foreach ( $brands as $brand )
                             <option value="{{$brand->id}}">{{$brand->brand_name}} </option>
                             @endforeach
-
-
                           </select>
-                          @error('brand_id')
+                     @error('brand_id')
                         <div class="invalid-feedback">
                             {{$message}}
                         </div>
-
                         @enderror
                       </div>
                       <div class="col-12">
                         <label for="inputVendor" class="form-label">Product Category</label>
                         <select name="category_id" class="form-select @error('category_id') is-invalid
                         @enderror" id="inputVendor">
-                            <option>Select Category</option>
+                            <option></option>
                             @foreach ( $categories as $cat )
                             <option value="{{$cat->id}}">{{$cat->category_name}} </option>
                             @endforeach

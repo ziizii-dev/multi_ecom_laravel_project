@@ -5,9 +5,13 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\VendorController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\User\CompareController;
 use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Controllers\Backend\BrandController;
+use App\Http\Controllers\Frontend\CartController;
+use App\Http\Controllers\User\WishlistController;
 use App\Http\Controllers\Backend\BannerController;
+use App\Http\Controllers\Backend\CouponController;
 use App\Http\Controllers\Backend\SliderController;
 use App\Http\Controllers\Frontend\IndexController;
 use App\Http\Controllers\Backend\ProductController;
@@ -26,9 +30,23 @@ use App\Http\Controllers\Backend\VendorProductController;
 |
 */
 
-Route::get('/', function () {
-    return view('frontend.index');
+ //froent product details all route
+
+
+ Route::controller(IndexController::class)->group(function(){
+    Route::get('/product/details/{id}/{slug}','productDetails');
+    Route::get('/','Index');
+    Route::get('/vendor/details/{id}','vendorDetails')->name('vendor#details');
+    Route::get('/vendor/all','vendorAll')->name('vendor#all');
+    Route::get('/product/category/{id}/{slug}','catWiseProduct')->name('category#details');
+    Route::get('/product/subcategory/{id}/{slug}','subCatWiseProduct');
+    Route::get(' /product/view/model/{id}','productViewAjax');
+
 });
+
+// Route::get('/', function () {
+//     return view('frontend.index');
+// });
 //Group Middleware
 Route::middleware(['auth'])->group(function(){
     Route::controller(UserController::class)->group(function(){
@@ -93,6 +111,8 @@ Route::middleware(['auth','role:admin'])->group(function(){
             Route::get('/edit/{id}','editCategory')->name('edit#category');
             Route::post('/update','updateCategory')->name('update#category');
             Route::get('/delete/{id}','deleteCategory')->name('delete#category');
+
+
 
 
         });
@@ -177,7 +197,20 @@ Route::middleware(['auth','role:admin'])->group(function(){
 
 
     });
-});//sliderController End
+});//bannerController End
+//Coupon controller start
+Route::controller(CouponController::class)->group(function(){
+    Route::prefix('coupon')->group(function(){
+        Route::get('/all','allCoupon')->name('all#coupon');
+        Route::get('/add','addCoupon')->name('add#coupon');
+        Route::post('/store','storeCoupon')->name('store#coupon');
+        Route::get('/edit/{id}','editCoupon')->name('edit#coupon');
+        Route::post('/update','updateCoupon')->name('update#coupon');
+        Route::get('/delete/{id}','deleteCoupon')->name('delete#coupon');
+
+});
+});//couponController End
+
 
 
 
@@ -227,12 +260,44 @@ Route::get('vendor/login',[VendorController::class,'vendorLogin'])->name('vendor
 Route::get('become/vendor',[VendorController::class,'becomeVendor'])->name('become#vendor');
 Route::post('vendor/register',[VendorController::class,'vendorRegister'])->name('vendor#register');
 
+Route::controller(CartController::class)->group(function(){
+    Route::post('/cart/data/store/{id}','addToCart');
+    Route::get('/product/mini/cart','addMiniCart');
+    Route::get('/minicart/product/remove/{rowId}','removeMiniCart');
+    Route::post('/dcart/data/store/{id}','addToCartDetails');
+});
 
- //froent product details all route
+
+Route::controller(WishlistController::class)->group(function(){
+    Route::post('/add-to-wishlist/{product_id}','addToWishList');
+});
+Route::controller(CompareController::class)->group(function(){
+    Route::post('/add-to-compare/{product_id}','addToCompare');
+});
+
+ //User backend SubCategory all route
+ Route::middleware(['auth','role:user'])->group(function(){
+    Route::controller(WishlistController::class)->group(function(){
+        Route::get('wishlist','allWishList')->name('all#wishlist');
+        Route::get(' /get/wishlist/product','getWishlistProduct');
+        Route::get('/wishlist/remove/{id}','wishlistRemove');
+
+    });//end wishlist
+    Route::controller(CompareController::class)->group(function(){
+        Route::get('/compare','allCompare')->name('all#compare');
+        Route::get(' /get/compare/product','getCompareProduct');
+        Route::get('/compare/remove/{id}','compareRemove');
 
 
-    Route::controller(IndexController::class)->group(function(){
-            Route::get('/product/details/{id}/{slug}','productDetails');
+    });//end wishlist
+//Cart route in user middleware
+Route::controller(CartController::class)->group(function(){
+    Route::get('/mycart','myCart')->name('mycart');
+    Route::get('/get/cart/product/','getCartProduct');
+    Route::get('/cart/remove/{rowId}' , 'cartRemove');
+    Route::get('/cart/decrement/{rowId}' , 'cartDecrement');
+    Route::get('/cart/increment/{rowId}' , 'cartIncrement');
 
-    });
+});
 
+    });//End user middleware

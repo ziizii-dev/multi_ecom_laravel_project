@@ -1,5 +1,5 @@
 @php
-    $featured = App\Models\Product::where('featured', 1)
+    $featured = App\Models\Product::where('delete_status',1)->where('featured', 1)
         ->orderBy('id', 'DESC')
         ->limit(6)
         ->get();
@@ -41,15 +41,15 @@
 
 
                                             </div>
-                                            {{-- <div class="product-action-1">
-                                                <a aria-label="Quick view" class="action-btn small hover-up"
-                                                    data-bs-toggle="modal" data-bs-target="#quickViewModal"> <i
-                                                        class="fi-rs-eye"></i></a>
-                                                <a aria-label="Add To Wishlist" class="action-btn small hover-up"
-                                                    href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
-                                                <a aria-label="Compare" class="action-btn small hover-up"
-                                                    href="shop-compare.html"><i class="fi-rs-shuffle"></i></a>
-                                            </div> --}}
+                                            <div class="product-action-1">
+
+                                                <a aria-label="Add To Wishlist" class="action-btn" id="{{$product->id}}"
+                                                   onclick = "addToWishList(this.id)"><i class="fi-rs-heart"></i></a>
+                                                                <a aria-label="Compare" class="action-btn"  id="{{$product->id}}"
+                                                                   onclick = "addToCompare(this.id)"><i class="fi-rs-shuffle"></i></a>
+                                                    <a aria-label="Quick view" class="action-btn" data-bs-toggle="modal" data-bs-target="#quickViewModal" id="{{$product->id}}"
+                                                        onclick = "productView(this.id)"> <i class="fi-rs-eye"></i> </a>
+                                                                               </div>
                                             @php
                                                 $amount = $product->selling_price - $product->discount_price;
                                                 $discount = ($amount / $product->selling_price) * 100;
@@ -76,6 +76,16 @@
                                             {{-- <div class="product-rate d-inline-block">
                                                 <div class="product-rating" style="width: 80%"></div>
                                             </div> --}}
+                                            @if ($product->vendor_id == NULL)
+                                            <div>
+                                                <span class="font-small text-muted">By <a href="#">Owner</a></span>
+                                            </div>
+                                            @else
+                                            <div>
+                                                <span class="font-small text-muted">By <a href="{{route('vendor#details',$product->vendor_id)}}">{{$product['vendor']['name']}} </a></span>
+                                            </div>
+                                            @endif
+
                                             @if ($product->discount_price == null)
                                                 <div class="product-price mt-10">
                                                     <span>${{ $product->selling_price }}</span>
@@ -88,12 +98,12 @@
                                                 </div>
                                             @endif
 
-                                            <div class="sold mt-15 mb-15">
+                                            {{-- <div class="sold mt-15 mb-15">
                                                 <div class="progress mb-5">
                                                     <div class="progress-bar" role="progressbar" style="width: 50%"
                                                         aria-valuemin="0" aria-valuemax="100"></div>
                                                 </div>
-                                            </div>
+                                            </div> --}}
                                             <a href="shop-cart.html" class="btn w-100 hover-up"><i
                                                     class="fi-rs-shopping-cart mr-5"></i>Add To Cart</a>
                                         </div>

@@ -108,6 +108,7 @@ public function deleteCategory($id){
 }//End Method
 
 
+
 //Validation
 private function addCategoryValidationCheck($request){
     Validator::make($request->all(),[

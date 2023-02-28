@@ -43,7 +43,7 @@ public function storeSubCategory(Request $request){
 //Edit subcategory
 
 public function editSubCategory($id){
-    $categories= Category::orderBy('category_name',"ASC")->get();
+    $categories= Category::where('status',1)->orderBy('category_name',"ASC")->get();
     $subcategory = SubCategory::findOrfail($id);
     return view('backend.subcategory.subcategory_edit',compact('categories','subcategory'));
 }//End Method
@@ -86,7 +86,7 @@ public function deleteSubCategory($id){
 //get subcategory data form ajax
 public function getSubCategory($category_id){
     // dd($category_id);
-$subcat = SubCategory::where('category_id',$category_id)->orderBy('subcategory_name','ASC')->get();
+$subcat = SubCategory::where('status',1)->where('category_id',$category_id)->orderBy('subcategory_name','ASC')->get();
 // dd($subcat);
 return json_encode($subcat);
 }//End method

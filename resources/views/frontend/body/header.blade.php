@@ -100,51 +100,41 @@
                                 </select>
                             </form>
                         </div>
+                        <div class="header-action-icon-2">
+                            <a href="{{route('all#compare')}}">
+                                <img class="svgInject" alt="Nest" src=" {{asset('frontend/assets/imgs/theme/icons/icon-compare.svg')}}" />
+                                {{-- <span class="pro-count blue" id="wishQty"></span> --}}
+                            </a>
+                            <a href="{{route('all#compare')}}"><span class="lable">Compare</span></a>
+                        </div>
+
 
                         <div class="header-action-icon-2">
-                            <a href="shop-wishlist.html">
+                            <a href="{{route('all#wishlist')}}">
                                 <img class="svgInject" alt="Nest" src=" {{asset('frontend/assets/imgs/theme/icons/icon-heart.svg')}}" />
-                                <span class="pro-count blue">6</span>
+                                <span class="pro-count blue" id="wishQty"></span>
                             </a>
-                            <a href="shop-wishlist.html"><span class="lable">Wishlist</span></a>
+                            <a href="{{route('all#wishlist')}}"><span class="lable">Wishlist</span></a>
                         </div>
                         <div class="header-action-icon-2">
-                            <a class="mini-cart-icon" href="shop-cart.html">
+                            <a class="mini-cart-icon" href="{{route('mycart')}} ">
                                 <img alt="Nest" src=" {{asset('frontend/assets/imgs/theme/icons/icon-cart.svg')}}" />
-                                <span class="pro-count blue">2</span>
+                                <span class="pro-count blue" id="cartQty">    </span>
                             </a>
-                            <a href="shop-cart.html"><span class="lable">Cart</span></a>
+                            <a href="{{route('mycart')}} "><span class="lable">Cart</span></a>
                             <div class="cart-dropdown-wrap cart-dropdown-hm2">
-                                <ul>
-                                    <li>
-                                        <div class="shopping-cart-img">
-                                            <a href="shop-product-right.html"><img alt="Nest" src=" {{asset('frontend/assets/imgs/shop/thumbnail-3.jpg')}}" /></a>
-                                        </div>
-                                        <div class="shopping-cart-title">
-                                            <h4><a href="shop-product-right.html">Daisy Casual Bag</a></h4>
-                                            <h4><span>1 × </span>$800.00</h4>
-                                        </div>
-                                        <div class="shopping-cart-delete">
-                                            <a href="#"><i class="fi-rs-cross-small"></i></a>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="shopping-cart-img">
-                                            <a href="shop-product-right.html"><img alt="Nest" src="assets/imgs/shop/thumbnail-2.jpg" /></a>
-                                        </div>
-                                        <div class="shopping-cart-title">
-                                            <h4><a href="shop-product-right.html">Corduroy Shirts</a></h4>
-                                            <h4><span>1 × </span>$3200.00</h4>
-                                        </div>
-                                        <div class="shopping-cart-delete">
-                                            <a href="#"><i class="fi-rs-cross-small"></i></a>
-                                        </div>
-                                    </li>
-                                </ul>
+
+
+                               {{-- Mini Cart Start with Ajax --}}
+                          <div id="miniCart">
+
+                          </div>
+
+                               {{-- End MiniCart --}}
+
                                 <div class="shopping-cart-footer">
                                     <div class="shopping-cart-total">
-                                        <h4>Total <span>$4000.00</span></h4>
-                                    </div>
+                                        <h4>Total <span id="cartSubTotal"></span> </h4>                                    </div>
                                     <div class="shopping-cart-button">
                                         <a href="shop-cart.html" class="outline">View cart</a>
                                         <a href="shop-checkout.html">Checkout</a>
@@ -157,7 +147,7 @@
 
 
                         <div class="header-action-icon-2">
-                            <a href="page-account.html">
+                            <a href="#">
                                 <img class="svgInject" alt="Nest" src="{{asset('frontend/assets/imgs/theme/icons/icon-user.svg')}} " />
                             </a>
 
@@ -187,11 +177,7 @@
                                 </ul>
                             </div>
                             @else
-
                                 <a class="mx-2" href="{{route('login')}} "><span class="lable ml-0">Login</span></a>
-
-
-
 
                             <a href="{{route('register')}} "><span class="lable ml-0">Register</span></a>
                             @endauth
@@ -210,7 +196,7 @@
 </div>
 
 @php
-    $categories = App\Models\Category::orderBy('category_name','ASC')->get();
+    $categories = App\Models\Category::where('status',1)->orderBy('category_name','ASC')->get();
 @endphp
 
 <div class="header-bottom header-bottom-bg-color sticky-bar">
@@ -231,7 +217,7 @@
 
                                 @foreach ($categories as $item )
                                 <li>
-                                    <a href="shop-grid-right.html"> <img src=" {{asset($item->category_image)}}" alt="" /> {{$item->category_name}}</a>
+                                    <a href="{{url('product/category/'.$item->id.'/'.$item->category_slug)}}"> <img src=" {{asset($item->category_image)}}" alt="" /> {{$item->category_name}}</a>
                                 </li>
                                 @endforeach
 
@@ -240,7 +226,7 @@
                             <ul class="end">
                                 @foreach ($categories as $item )
                                 <li>
-                                    <a href="shop-grid-right.html"> <img src=" {{asset($item->category_image)}}" alt="" /> {{$item->category_name}}</a>
+                                    <a href="{{url('product/category/'.$item->id.'/'.$item->category_slug)}}"> <img src=" {{asset($item->category_image)}}" alt="" /> {{$item->category_name}}</a>
                                 </li>
                                 @endforeach
                             </ul>
@@ -273,23 +259,23 @@
                         <ul>
 
                             <li>
-                                <a class="active" href="index.html">Home  </a>
+                                <a class="active" href="{{url('/')}}">Home  </a>
 
                             </li>
 
                         @php
-                            $categories = App\Models\Category::orderBy('category_name','ASC')->limit(5)->get();
+                            $categories = App\Models\Category::where('status',1)->orderBy('category_name','ASC')->limit(5)->get();
                         @endphp
 
                         @foreach ($categories as $category )
                         <li>
-                            <a href="#"> {{$category->category_name}} <i class="fi-rs-angle-down"></i></a>
+                            <a href="{{url('product/category/'.$category->id.'/'.$category->category_slug)}} "> {{$category->category_name}} <i class="fi-rs-angle-down"></i></a>
                          @php
-                            $subcategories = App\Models\SubCategory::where('category_id',$category->id)->orderBy('subcategory_name','ASC')->get();
+                            $subcategories = App\Models\SubCategory::where('status',1)->where('category_id',$category->id)->orderBy('subcategory_name','ASC')->get();
                         @endphp
                             <ul class="sub-menu">
                                 @foreach ($subcategories as $subcategory )
-                                <li><a href="vendors-grid.html">{{$subcategory->subcategory_name}} </a></li>
+                                <li><a href="{{url('product/subcategory/'.$subcategory->id.'/'.$subcategory->subcategory_slug)}}">{{$subcategory->subcategory_name}} </a></li>
 
                                 @endforeach
 

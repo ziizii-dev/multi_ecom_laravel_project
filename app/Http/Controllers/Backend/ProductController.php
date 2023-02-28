@@ -39,7 +39,7 @@ public function addProduct(){
 
 //Store Product
 public function storeProduct(Request $request){
-
+// return $request;
     $this->storeProductValidationCheck($request);
     $image = $request->file('product_thambnail');
     $fileName = hexdec(uniqid()).'.'.$image->getClientOriginalExtension();
@@ -74,6 +74,7 @@ public function storeProduct(Request $request){
 
 
     ]);
+// return $product_id;
 
     $images = $request->file('multi_img');
     // dd($images);
