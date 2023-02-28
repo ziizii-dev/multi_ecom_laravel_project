@@ -17,6 +17,7 @@ use App\Http\Controllers\Frontend\IndexController;
 use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Backend\SubCategoryController;
+use App\Http\Controllers\Backend\ShippingAreaController;
 use App\Http\Controllers\Backend\VendorProductController;
 
 /*
@@ -198,6 +199,7 @@ Route::middleware(['auth','role:admin'])->group(function(){
 
     });
 });//bannerController End
+
 //Coupon controller start
 Route::controller(CouponController::class)->group(function(){
     Route::prefix('coupon')->group(function(){
@@ -210,6 +212,18 @@ Route::controller(CouponController::class)->group(function(){
 
 });
 });//couponController End
+
+//Shipping controller start
+Route::controller(ShippingAreaController::class)->group(function(){
+    Route::prefix('shipping')->group(function(){
+        Route::get('/all','allDivision')->name('all#division');
+        Route::get('/add','addDivision')->name('add#division');
+        Route::post('/store','storeDivision')->name('store#division');
+        Route::get('/edit/{id}','editDivision')->name('edit#division');
+        Route::post('/update','updateDivision')->name('update#division');
+        Route::get('/delete/{id}','deleteDivision')->name('delete#division');
+});
+});//ShippingController End
 
 
 
