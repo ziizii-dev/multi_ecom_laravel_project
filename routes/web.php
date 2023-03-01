@@ -223,6 +223,14 @@ Route::controller(ShippingAreaController::class)->group(function(){
         Route::post('/update','updateDivision')->name('update#division');
         Route::get('/delete/{id}','deleteDivision')->name('delete#division');
 });
+});//ShippingController
+//District controller start
+Route::controller(ShippingAreaController::class)->group(function(){
+    Route::prefix('shipping')->group(function(){
+        Route::get('/all/district','allDistrict')->name('all#district');
+        Route::get('/add/district','addDistrict')->name('add#district');
+        Route::post('/store/district','storeDistrict')->name('store#district');
+});
 });//ShippingController End
 
 

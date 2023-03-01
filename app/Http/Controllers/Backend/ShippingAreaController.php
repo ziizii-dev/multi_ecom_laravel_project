@@ -93,10 +93,52 @@ return redirect()->route('all#division')->with($notification);
    }
 }//End method
 
+///////District Section
+//all disctict
+ //all coupon
+ public function allDistrict(){
+    $district = ShipDistricts::latest()->get();
+
+    return view('backend.ship.district.district_all',compact('district'));
+}//end method
+ //Add district
+ public function addDistrict(){
+    $division = ShipDivision::where('delete_status',1)->orderBy('division_name','ASC')->get();
+    return view("backend.ship.district.district_add",compact('division'));
+}//End method
+
+ ///Store district
+ public function storeDistrict(Request $request){
+    // return $request;
+    $this->districtValidationCkeck($request);
+
+    ShipDistricts::insert([
+            'division_id'=>$request->division_id,
+            'district_name'=>$request->district_name,
+            "created_at"=>Carbon::now()
+
+
+         ]);
+         $notification = array(
+            'message'=>"District inserted Successfully",
+            'alert-type'=>'success'
+        );
+        return redirect()->route('all#district')->with($notification);
+}//End Method
+
  //Coupon validation
  private function divisionValidationCkeck($request){
     Validator::make($request->all(),[
         'division_name'=>'required|string',
+
+
+    ])->Validate();
+}//End
+//District validation
+private function districtValidationCkeck($request){
+    Validator::make($request->all(),[
+        'division_id'=>'required',
+        'district_name'=>'required|string',
 
 
     ])->Validate();
